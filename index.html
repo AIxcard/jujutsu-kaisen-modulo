@@ -403,7 +403,7 @@
             border-radius: 4px;
         }
 
-        /* Fullscreen Chapter Reader (Overview removed per request) */
+        /* Fullscreen Chapter Reader (No Overview Button) */
         .reader-view {
             display: none;
             position: fixed;
@@ -730,7 +730,6 @@
         function updateProgressUI() {
             if (!manifest || !manifest.chapters) return;
             const readSet = getReadSet();
-            // Core chapters: exclude .5 and other decimal installments
             const coreChapters = manifest.chapters.filter(ch => ch.number % 1 === 0 && ch.number > 0);
             const coreTotal = coreChapters.length;
             const coreReadCount = coreChapters.filter(ch => readSet.has(ch.number)).length;
@@ -742,7 +741,6 @@
                 localStorage.removeItem(`kuro_completed_${manifest.mangaId}`);
             }
 
-            // Badges
             const badgesWrap = document.getElementById('heroBadges');
             const existingYouBadge = document.getElementById('completedYouBadge');
             if (isCompleted) {
@@ -757,7 +755,6 @@
                 existingYouBadge.remove();
             }
 
-            // Progress text
             const summary = document.getElementById('progressSummary');
             if (summary) {
                 const pct = coreTotal > 0 ? Math.round((coreReadCount / coreTotal) * 100) : 0;
@@ -770,7 +767,6 @@
                 }
             }
 
-            // Grid card checkmarks
             document.querySelectorAll('.chapter-card').forEach(card => {
                 const chNum = parseFloat(card.dataset.num);
                 if (readSet.has(chNum)) {
@@ -836,7 +832,6 @@
             currentChapterIndex = index;
             const ch = manifest.chapters[index];
 
-            // Mark this chapter as read
             markChapterRead(ch.number);
 
             document.body.classList.add('reading-active');
